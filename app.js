@@ -4,6 +4,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const tg = window.Telegram.WebApp;
     const user = tg.initDataUnsafe?.user;
 
+    // Check if there is a 'startapp' parameter in the URL
+    const params = new URLSearchParams(window.location.search);
+    const startAppUserId = params.get('startapp');
+
+    // If 'startapp' parameter exists, redirect to external website
+    if (startAppUserId) {
+        window.location.href = "https://bekiman.netlify.app/";
+        return;  // Stop further execution after redirect
+    }
+
     if (user) {
         // Hide loading message
         document.getElementById('loading-message').style.display = 'none';
@@ -25,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('referral').style.display = 'block';
         
         // Check if this user came from a referral link
-        const params = new URLSearchParams(window.location.search);
         const referrerId = params.get('referrer');
         if (referrerId && referrerId !== user.id.toString()) {
             // Simulate adding points to referrer's balance
