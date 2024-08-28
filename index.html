@@ -21,12 +21,13 @@
         <div id="balance" style="display: none;"> <!-- Hidden initially -->
             <p>Your balance is: <span id="user-balance">0 points</span></p>
         </div>
-
-        <!-- Referral Link -->
-        <div id="referral" style="display: none;"> <!-- Hidden initially -->
-            <p>Share your referral link:</p>
-            <input type="text" id="referral-link" readonly>
-            <button onclick="copyReferralLink()">Copy Link</button>
+        
+        <!-- Referral System -->
+        <div id="referral-system" style="display: none;">
+            <p>Enter your inviter's Telegram user ID to receive points:</p>
+            <input type="text" id="inviter-id" placeholder="Enter user ID">
+            <button onclick="submitReferral()">Submit</button>
+            <p id="referral-message"></p>
         </div>
     </div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>

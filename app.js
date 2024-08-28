@@ -4,15 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const tg = window.Telegram.WebApp;
     const user = tg.initDataUnsafe?.user;
 
-    // Check if there is a 'referrer' parameter in the URL
-    const params = new URLSearchParams(window.location.search);
-    const referrerId = params.get('referrer');
-
-    // If 'referrer' parameter exists, add points to the inviter
-    if (referrerId) {
-        addPointsToReferrer(referrerId);  // Add 2 points to the inviter's balance
-    }
-
     if (user) {
         // Hide loading message
         document.getElementById('loading-message').style.display = 'none';
@@ -27,12 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Initialize user balance (in a real app, fetch actual balance from your backend)
         let balance = 0;  // Starting balance
         updateBalance(balance);  // Update UI with balance
-        
-        // Generate and display referral link
-        const referralLink = generateReferralLink(user.id);
-        document.getElementById('referral-link').value = referralLink;
-        document.getElementById('referral').style.display = 'block';
-        
+
+        // Show referral system
+        document.getElementById('referral-system').style.display = 'block';
     } else {
         // Display error if user info is not available
         document.getElementById('loading-message').textContent = 'Unable to retrieve user information.';
@@ -45,24 +33,42 @@ function updateBalance(balance) {
     document.getElementById('balance').style.display = 'block';
 }
 
-// Function to generate a referral link for the user
-function generateReferralLink(userId) {
-    const botUsername = 'Ebabdgbbot';  // Your Telegram bot's username
-    return `https://t.me/${botUsername}?start=${userId}`;  // Generate referral link using the bot username and user ID
+// Function to handle referral submission
+function submitReferral() {
+    const inviterId = document.getElementById('inviter-id').value.trim();
+    if (!inviterId) {
+        document.getElementById('referral-message').textContent = 'Please enter an inviter ID.';
+        return;
+    }
+
+    // Check if the inviter ID is valid
+    if (isValidUserId(inviterId)) {
+        // Simulate adding points to the inviter's balance
+        // In a real app, you would send a request to your backend server here
+        addPointsToInviter(inviterId);
+    } else {
+        document.getElementById('referral-message').textContent = 'Invalid inviter ID or already invited.';
+    }
 }
 
-// Function to copy the referral link to clipboard
-function copyReferralLink() {
-    const referralInput = document.getElementById('referral-link');
-    referralInput.select();
-    document.execCommand('copy');
-    alert('Referral link copied to clipboard!');
+// Function to check if the user ID is valid and not already used
+// In a real application, this check would be done on the server
+function isValidUserId(userId) {
+    // Simulate checking user ID validity
+    // In a real application, check if the ID exists and if the current user has not used it before
+    // Example: return fetch(`/check-user/${userId}`).then(response => response.json()).then(data => data.valid);
+    
+    // For demo purposes, assume all user IDs are valid if not already used
+    // This should be replaced with actual backend logic
+    return true;
 }
 
-// Simulate adding points to the referrer's balance
-// In a real app, you would call your backend API to update the referrer's balance
-function addPointsToReferrer(referrerId) {
-    // Simulate adding points to the inviter's balance
-    console.log(`Adding 2 points to referrer with ID: ${referrerId}`);
-    // In a real-world scenario, you'd send a request to your backend server to update the balance.
+// Function to add points to the inviter's balance
+// In a real application, this function would make an API call to your backend server
+function addPointsToInviter(inviterId) {
+    // Simulate adding points
+    console.log(`Adding 2 points to inviter with ID: ${inviterId}`);
+    document.getElementById('referral-message').textContent = `Referral successful! 2 points added to the inviter's balance.`;
+    // Update the balance UI accordingly
+    // In a real app, fetch updated balance from your backend
 }
